@@ -1,4 +1,4 @@
-import '../styles/globals.css'
+import 'tailwindcss/tailwind.css'
 import React from "react";
 import 'firebase/firestore';
 import 'firebase/auth';
