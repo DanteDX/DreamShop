@@ -3,7 +3,11 @@ import * as admin from "firebase-admin";
 
 try {
   admin.initializeApp({
-    credential: admin.credential.applicationDefault(),
+    credential: admin.credential.cert({
+      projectId: privateKey["project_id"],
+      privateKey: privateKey["private_key"].replace(/\\n/g, "\n"),
+      clientEmail: privateKey["client_email"]
+    }),
     databaseURL
   })
 }catch (err) {
