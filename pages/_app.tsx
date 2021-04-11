@@ -2,18 +2,21 @@ import 'tailwindcss/tailwind.css'
 import React from "react";
 import 'firebase/firestore';
 import 'firebase/auth';
-import {Fuego, FuegoProvider} from "@nandorojo/swr-firestore";
+import {FuegoProvider} from "@nandorojo/swr-firestore";
 import {firebaseConfig} from "@/config/firebaseConfig";
 import FirebaseProvider from "@/components/wrappers/firebaseProvider";
+import { Fuego } from "@/scripts/fuego";
 
 const fuego = new Fuego(firebaseConfig);
 
 function App({ Component, pageProps }) {
-  <FuegoProvider fuego={fuego}>
-    <FirebaseProvider>
-      <Component {...pageProps} />
-    </FirebaseProvider>
-  </FuegoProvider>
+  return(
+    <FuegoProvider fuego={fuego}>
+      <FirebaseProvider>
+        <Component {...pageProps} />
+      </FirebaseProvider>
+    </FuegoProvider>
+  )
 }
 
 export default App;
