@@ -1,8 +1,9 @@
-import { privateKey, databaseURL } from "../config/privateKey";
+import { privateKey, databaseURL } from "@/config/privateKey";
 import * as admin from "firebase-admin";
 
 try {
   admin.initializeApp({
+    // later the credentials will be loaded from a .env file
     credential: admin.credential.cert({
       projectId: privateKey["project_id"],
       privateKey: privateKey["private_key"].replace(/\\n/g, "\n"),
