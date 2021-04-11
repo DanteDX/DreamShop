@@ -41,6 +41,7 @@ export default function Books() {
           }));
         }}
       />
+      <br/>
       <input
         id="newBookGenre"
         type="text"
@@ -53,6 +54,7 @@ export default function Books() {
           }));
         }}
       />
+      <br/>
       <input
         id="newBookWriter"
         type="text"
@@ -65,6 +67,7 @@ export default function Books() {
           }));
         }}
       />
+      <br/>
       <input
         id="readerMinimumAge"
         type="number"
@@ -77,11 +80,12 @@ export default function Books() {
           }));
         }}
       />
+      <br/>
       <button
         onClick={async (e) => {
           await Promise.all([
             addNewbook(state),
-            setState((state) => defaultState)
+            setState(state => defaultState)
           ]);
         }}
       >
