@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import db from "@/scripts/firestoreAdmin";
 import { fuego, useDocument, useCollection } from "@nandorojo/swr-firestore";
 
@@ -25,9 +25,14 @@ export default function Books() {
   const { set: addNewbook } = useDocument(`books/${state.newBookId}`, {
     listen: true
   });
+
+  useEffect(function(){
+    console.log(allBooks);
+  },[allBooks])
+  
   return (
     <div>
-      {allBooks ? <p>Books exists</p> : <p>Books don't exist yet</p>}
+      {allBooks ? <p>Books exists{allBooks.toString()}</p> : <p>Books don't exist yet</p>}
       <input
         id="newBookName"
         type="text"
