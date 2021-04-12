@@ -1,8 +1,8 @@
 import React, { useState,useEffect } from "react";
-import db from "@/scripts/firestoreAdmin";
 import { fuego, useDocument, useCollection } from "@nandorojo/swr-firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
 
-type eachBook = {
+interface eachBook{
   newBookId: string;
   newBookName: string;
   newBookGenre: string;
@@ -11,6 +11,7 @@ type eachBook = {
 };
 
 export default function Books() {
+  const [user] = useAuthState(fuego.auth());
   const defaultState = {
     newBookId: "",
     newBookName: "",
@@ -22,17 +23,32 @@ export default function Books() {
   const { data: allBooks } = useCollection("books", {
     listen: true
   });
-  const { set: addNewbook } = useDocument(`books/${state.newBookId}`, {
+  const { set: addNewBook} = useDocument(`books/${state.newBookId}`, {
     listen: true
   });
 
   useEffect(function(){
     console.log(allBooks);
   },[allBooks])
+
   
   return (
     <div>
       {allBooks ? <p>Books exists{allBooks.toString()}</p> : <p>Books don't exist yet</p>}
+      <br/>
+      {user ? `Logged in as ${user.email}` : "No user is logged in currently"}
+      <br/>
+      <button onClick={async(e) =>{
+        try{
+          await fuego.auth().signOut();
+        }catch(err){
+          console.log('There was an error signing out!')
+        }
+      }}>
+        LogOut
+      </button>
+      <br/>
+      {/*  */}
       <input
         id="newBookName"
         type="text"
@@ -79,7 +95,7 @@ export default function Books() {
         placeholder="readerMinimumAge"
         value={state.readerMinimumAge}
         onChange={(e) => {
-          setState((stat) => ({
+          setState((state) => ({
             ...state,
             readerMinimumAge: Number(e.target.value),
           }));
@@ -89,7 +105,8 @@ export default function Books() {
       <button
         onClick={async (e) => {
           await Promise.all([
-            addNewbook(state),
+            // addNewBook(state),
+            fuego.db.collection('books').doc(state.newBookId).set(state),
             setState(state => defaultState)
           ]);
         }}
